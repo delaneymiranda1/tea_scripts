@@ -75,7 +75,7 @@ RSpec.describe "Subscriptions", type: :request do
       "ACCEPT" => "application/json"
     }
 
-    canelled = { status: 0 }
+    cancelled = { status: 0 }
 
     patch "/api/v1/subscriptions/#{subscription.id}", headers: headers, params: cancelled.to_json
 
