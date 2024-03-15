@@ -8,5 +8,6 @@ class Subscription < ApplicationRecord
   validates_presence_of :frequency
   validates_presence_of :customer_id
   validates_presence_of :tea_id
-  
+
+  enum status: {"cancelled": 0, "active": 1}
 end
