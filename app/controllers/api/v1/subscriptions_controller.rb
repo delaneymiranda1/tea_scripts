@@ -18,6 +18,9 @@ class Api::V1::SubscriptionsController < ApplicationController
     end
   end
 
+  def index
+    render json: SubscriptionSerializer.new(Subscription.all)
+  end
 
   private
 

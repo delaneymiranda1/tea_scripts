@@ -4,6 +4,7 @@ RSpec.describe "Subscriptions", type: :request do
   before(:each) do
     @customer = Customer.create!(first_name: "Tana", last_name: "Mongeau", email: "tana@cancelled.com", address: "800 Cancelled Ave")
     @tea = Tea.create!(title: "Black Tea", description: "Bitter", temperature: 100, brew_time: "5 minutes")
+    @tea2 = Tea.create!(title: "Vanilla Chai", description: "sweet", temperature: 100, brew_time: "5 minutes")
   end
 
   #POST /api/v1/subscriptions
@@ -118,4 +119,25 @@ RSpec.describe "Subscriptions", type: :request do
     expect(json[:errors][:title]).to eq("Cannot update this param.")
   end
 
+
+  #GET /api/v1/subscriptions
+  it "shows all the customers subscriptions" do
+    subscription = Subscription.create!(title: "Black Tea Subscription", price: 20, status: 0, frequency: "monthly", tea_id: @tea.id, customer_id: @customer.id)
+    subscription2 = Subscription.create!(title: "Vanilla Chai Tea Subscription", price: 25, status: 1, frequency: "monthly", tea_id: @tea2.id, customer_id: @customer.id)
+
+    get "/api/v1/subscriptions"
+
+    expect(response.status).to eq(200)
+
+    json = JSON.parse(response.body, symbolize_names: true) 
+
+    expect(json).to have_key(:data)
+    expect(json[:data]).to be_a(Array)
+
+    expect(json[:data][0][:attributes][:title]).to eq("Black Tea Subscription")
+    expect(json[:data][0][:attributes][:status]).to eq("cancelled")
+
+    expect(json[:data][1][:attributes][:title]).to eq("Vanilla Chai Tea Subscription")
+    expect(json[:data][1][:attributes][:status]).to eq("active")
+  end
 end
