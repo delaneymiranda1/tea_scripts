@@ -95,4 +95,27 @@ RSpec.describe "Subscriptions", type: :request do
     
     expect(json[:data][:attributes][:status]).to eq("cancelled")
   end
+
+  # sad path cancelling subscription
+  it "does not cancel if subscriber updates wrong param" do
+  
+    subscription = Subscription.create!(title: "Black Tea Subscription", price: 20, status: 1, frequency: "monthly", tea_id: @tea.id, customer_id: @customer.id)
+
+    headers = { "CONTENT_TYPE" => "application/json",
+      "ACCEPT" => "application/json"
+    }
+
+    cancelled = { price: 0 }
+
+    patch "/api/v1/subscriptions/#{subscription.id}", headers: headers, params: cancelled.to_json
+
+    json = JSON.parse(response.body, symbolize_names: true)
+
+    expect(response.status).to eq(422)
+
+    expect(json[:errors]).to have_key(:title)
+    expect(json[:errors]).to have_key(:status)
+    expect(json[:errors][:title]).to eq("Cannot update this param.")
+  end
+
 end
