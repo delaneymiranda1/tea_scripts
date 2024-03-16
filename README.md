@@ -1,24 +1,23 @@
-# README
+# Tea Subscriptions
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## Summary
 
-Things you may want to cover:
+This app allows for the user to access 3 endpoints: one to subscribe a customer to a tea subscription, one to cancel a customer’s tea subscription and one to see all of a customer’s subscriptions (active and cancelled).
 
-* Ruby version
+## Setup Instructions
 
-* System dependencies
 
-* Configuration
+```git clone git@github.com:delaneymiranda1/tea_scripts.git```
 
-* Database creation
+```bundle install```
 
-* Database initialization
+```rails s```
 
-* How to run the test suite
+### Endpoints
 
-* Services (job queues, cache servers, search engines, etc.)
+POST /api/v1/subscriptions
 
-* Deployment instructions
+PATCH /api/v1/subscriptions/subscription_id
 
-* ...
+GET /api/v1/subscriptions
+
